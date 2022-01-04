@@ -1,0 +1,37 @@
+server:
+  port: ${SERVER_PORT:8000}
+
+spring:
+  main.web-application-type: none
+
+  application:
+
+    name: time-bot
+
+  datasource:
+
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/bot_db}
+    username: ${DB_USER:bot_user}
+    password: ${DB_PASS:bot_pass}
+    type: com.zaxxer.hikari.HikariDataSource
+    platform: postgresql
+
+    hikari:
+
+      connection-test-query: SELECT 1
+      minimum-idle: ${DB_IDLE_CONN:1}
+      maximum-pool-size: ${DB_POOL_SIZE:5}
+      pool-name: bot-pool
+
+  flyway:
+
+    group: true
+    locations: ${DB_MIGRATIONS_PATH:classpath:/db/migrations,filesystem:migrations,classpath:db/migration}
+    baselineOnMigrate: true
+
+telegram-bot:
+  admin-user: ${BOT_ADMIN_ID:0}
+  token: ${BOT_TOKEN:""}
+  backup-folder: ${BOT_BACKUP_FOLDER:""}
+  max-file-size: ${BOT_FILE_SIZE:10_000_000}
