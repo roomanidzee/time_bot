@@ -6,6 +6,7 @@ import com.romanidze.timebot.modules.time.domain.TimeInfoMinutes
 import com.romanidze.timebot.modules.time.dto.RecordedTime
 import com.romanidze.timebot.modules.time.mappers.mybatis.TimeInfoDBMapper
 import com.romanidze.timebot.modules.time.services.interfaces.TimeInfoService
+import mu.KLogging
 import org.springframework.stereotype.Service
 import java.lang.Exception
 
@@ -14,11 +15,12 @@ class TimeInfoServiceImpl(private val dbMapper: TimeInfoDBMapper) : TimeInfoServ
     override fun recordTime(userID: Long, inputValues: List<String>): RecordedTime {
 
         if (inputValues.size > 2 || inputValues.isEmpty()) {
+            logger.info("possibly wrong input for bot")
             return RecordedTime(0, 0)
         }
 
         if (inputValues.size == 1) {
-
+            logger.info("single input element")
             val inputValue: String = inputValues[0]
 
             return if (inputValue.contains("h") && 'h' == inputValue.toCharArray().last()) {
@@ -44,6 +46,8 @@ class TimeInfoServiceImpl(private val dbMapper: TimeInfoDBMapper) : TimeInfoServ
             }
         } else {
 
+            logger.info("full time input element")
+
             val firstValue: String = inputValues[0]
             val secondValue: String = inputValues[1]
 
@@ -65,4 +69,6 @@ class TimeInfoServiceImpl(private val dbMapper: TimeInfoDBMapper) : TimeInfoServ
             }
         }
     }
+
+    companion object : KLogging()
 }

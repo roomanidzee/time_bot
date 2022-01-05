@@ -9,6 +9,7 @@ import com.romanidze.timebot.modules.bot.enums.BotCommand
 import com.romanidze.timebot.modules.bot.enums.BotCommandType
 import com.romanidze.timebot.modules.time.dto.RecordedTime
 import com.romanidze.timebot.modules.time.services.interfaces.TimeInfoService
+import mu.KLogging
 
 class BotUpdateHandlerImpl(
     private val timeInfoService: TimeInfoService
@@ -30,10 +31,12 @@ class BotUpdateHandlerImpl(
                 when (command.type) {
 
                     BotCommandType.START -> {
+                        logger.info("processing /start command")
                         sender.sendText(chatID, "This is a bot for recording of your time! Let's go!")
                     }
 
                     BotCommandType.RECORD -> {
+                        logger.info("processing /record command")
                         val inputValues: List<String> = command.commandValues
 
                         val recordResult: RecordedTime = timeInfoService.recordTime(userID, inputValues)
@@ -50,4 +53,6 @@ class BotUpdateHandlerImpl(
             }
         }
     }
+
+    companion object : KLogging()
 }
