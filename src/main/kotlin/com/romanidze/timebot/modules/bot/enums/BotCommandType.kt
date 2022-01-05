@@ -16,7 +16,7 @@ enum class BotCommandType(private val cmd: String, private val hasValues: Boolea
     fun getValues(command: String): List<String> {
 
         return if (hasValues) {
-            command.removePrefix("/$cmd").split(" ")
+            command.removePrefix("/$cmd ").split(" ")
         } else emptyList()
     }
 }

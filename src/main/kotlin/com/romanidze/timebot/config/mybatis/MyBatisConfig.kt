@@ -16,7 +16,7 @@ import javax.sql.DataSource
 @MapperScan(
     basePackages =
     [
-        "com.romanidze.timebot.module.time.mappers.mybatis",
+        "com.romanidze.timebot.modules.time.mappers.mybatis",
     ]
 )
 class MyBatisConfig(@Qualifier("dataSource") private val datasource: DataSource) {

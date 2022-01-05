@@ -15,19 +15,19 @@ interface TimeInfoDBMapper {
             "VALUES (#{userID}, CURRENT_DATE, #{hoursValue}::double precision * '1 hour'::interval)"
     )
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    fun save(timeInfo: TimeInfoHours)
+    fun saveHours(timeInfo: TimeInfoHours)
 
     @Insert(
         "INSERT INTO time_info(user_id, date_info, time_info) " +
             "VALUES (#{userID}, CURRENT_DATE, #{minutesValue}::double precision * '1 minute'::interval)"
     )
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    fun save(timeInfo: TimeInfoMinutes)
+    fun saveMinutes(timeInfo: TimeInfoMinutes)
 
     @Insert(
         "INSERT INTO time_info(user_id, date_info, time_info) " +
             "VALUES (#{userID}, CURRENT_DATE, #{hoursValue}::double precision * '1 hour'::interval + #{minutesValue}::double precision * '1 minute'::interval)"
     )
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    fun save(timeInfo: TimeInfoHoursAndMinutes)
+    fun saveTime(timeInfo: TimeInfoHoursAndMinutes)
 }

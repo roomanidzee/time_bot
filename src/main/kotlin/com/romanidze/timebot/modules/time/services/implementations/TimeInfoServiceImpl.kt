@@ -25,7 +25,7 @@ class TimeInfoServiceImpl(private val dbMapper: TimeInfoDBMapper) : TimeInfoServ
 
                 try {
                     val hoursValue: Int = inputValue.replace("h", "").toInt()
-                    dbMapper.save(TimeInfoHours(userID = userID, hoursValue = hoursValue))
+                    dbMapper.saveHours(TimeInfoHours(userID = userID, hoursValue = hoursValue))
                     RecordedTime(hoursValue, 0)
                 } catch (e: Exception) {
                     RecordedTime(0, 0)
@@ -34,7 +34,7 @@ class TimeInfoServiceImpl(private val dbMapper: TimeInfoDBMapper) : TimeInfoServ
 
                 try {
                     val minutesValue: Int = inputValue.replace("m", "").toInt()
-                    dbMapper.save(TimeInfoMinutes(userID = userID, minutesValue = minutesValue))
+                    dbMapper.saveMinutes(TimeInfoMinutes(userID = userID, minutesValue = minutesValue))
                     RecordedTime(0, minutesValue)
                 } catch (e: Exception) {
                     RecordedTime(0, 0)
@@ -55,7 +55,7 @@ class TimeInfoServiceImpl(private val dbMapper: TimeInfoDBMapper) : TimeInfoServ
                 try {
                     val hoursValue: Int = firstValue.replace("h", "").toInt()
                     val minutesValue: Int = secondValue.replace("m", "").toInt()
-                    dbMapper.save(TimeInfoHoursAndMinutes(userID = userID, hoursValue = hoursValue, minutesValue = minutesValue))
+                    dbMapper.saveTime(TimeInfoHoursAndMinutes(userID = userID, hoursValue = hoursValue, minutesValue = minutesValue))
                     RecordedTime(hoursValue, minutesValue)
                 } catch (e: Exception) {
                     RecordedTime(0, 0)
