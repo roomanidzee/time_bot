@@ -1,0 +1,29 @@
+
+name: Bot CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  
+jobs:
+  
+  build:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      
+      - name: Checkout actual code
+        uses: actions/checkout@v2
+
+      
+      - name: Setup JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distibution: 'adopt'
+
+      - name: Maven Build
+        run: mvn verify
