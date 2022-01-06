@@ -57,4 +57,5 @@ jobs:
           context: .
           push: true
           file: ./docker/Dockerfile
-          tags: roomanidzee/time_bot:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
