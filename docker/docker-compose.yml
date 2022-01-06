@@ -1,0 +1,43 @@
+version: '3'
+
+volumes:
+  pg_project:
+
+services:
+
+  pg_db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=bot_pass
+      - POSTGRES_USER=bot_user
+      - POSTGRES_DB=bot_db
+    volumes:
+      - pg_project:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    container_name: pg_db
+
+  app:
+    image: "time_bot:latest"
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pg_db
+    environment:
+      PORT: 8000
+      JAVA_OPTS: "-Xms200m -Xmx2048m"
+      JDBC_DATABASE_URL: "jdbc:postgresql://pg_db:5432/bot_db"
+      JDBC_DATABASE_USERNAME: "bot_user"
+      JDBC_DATABASE_PASSWORD: "bot_pass"
+      DB_IDLE_CONN: 100
+      DB_POOL_SIZE: 1100
+      DB_MIGRATIONS_PATH: "filesystem:migrations,classpath:db/migration"
+      BOT_ADMIN_ID: 1234
+      BOT_TOKEN: "your_token"
+      BOT_POLL_TIME: 100
+    command: start
+    container_name: time_bot
