@@ -56,5 +56,5 @@ jobs:
         with:
           context: .
           push: true
-          file: {context}/docker/Dockerfile
+          file: ./docker/Dockerfile
           tags: roomanidzee/time_bot:latest
