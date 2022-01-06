@@ -1,5 +1,6 @@
 package com.romanidze.timebot.modules.time.services.implementations
 
+import com.romanidze.timebot.modules.time.domain.AnalyticTimeInfo
 import com.romanidze.timebot.modules.time.domain.TimeInfoHours
 import com.romanidze.timebot.modules.time.domain.TimeInfoHoursAndMinutes
 import com.romanidze.timebot.modules.time.domain.TimeInfoMinutes
@@ -67,6 +68,41 @@ class TimeInfoServiceImpl(private val dbMapper: TimeInfoDBMapper) : TimeInfoServ
             } else {
                 RecordedTime(0, 0)
             }
+        }
+    }
+
+    override fun getTodayInfo(userID: Long): AnalyticTimeInfo {
+
+        logger.info("retrieving info for today for user $userID")
+
+        return dbMapper.getTimeForToday(userID)
+    }
+
+    override fun getPeriodInfo(inputDate: String, userID: Long): List<AnalyticTimeInfo> {
+
+        val elements: List<String> = inputDate.split("-")
+
+        val firstCond: Boolean = elements.size == 3
+        val secondCond: Boolean = elements.all { it.all { ch -> ch.isDigit() } }
+
+        return if (!(firstCond && secondCond)) {
+            emptyList()
+        } else {
+            dbMapper.getTimeForPeriod(inputDate, userID)
+        }
+    }
+
+    override fun getDayInfo(inputDate: String, userID: Long): AnalyticTimeInfo {
+
+        val elements: List<String> = inputDate.split("-")
+
+        val firstCond: Boolean = elements.size == 3
+        val secondCond: Boolean = elements.all { it.all { ch -> ch.isDigit() } }
+
+        return if (!(firstCond && secondCond)) {
+            AnalyticTimeInfo(0L, "", "")
+        } else {
+            dbMapper.getTimeForDay(inputDate, userID)
         }
     }
 

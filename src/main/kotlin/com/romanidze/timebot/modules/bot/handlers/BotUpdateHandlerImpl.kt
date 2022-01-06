@@ -7,6 +7,7 @@ import com.pengrad.telegrambot.model.Message
 import com.pengrad.telegrambot.model.Update
 import com.romanidze.timebot.modules.bot.enums.BotCommand
 import com.romanidze.timebot.modules.bot.enums.BotCommandType
+import com.romanidze.timebot.modules.time.domain.AnalyticTimeInfo
 import com.romanidze.timebot.modules.time.dto.RecordedTime
 import com.romanidze.timebot.modules.time.services.interfaces.TimeInfoService
 import mu.KLogging
@@ -45,6 +46,60 @@ class BotUpdateHandlerImpl(
                             sender.sendText(chatID, Emoji.ERROR.msg("Something is wrong with your input! Please, try again"))
                         } else {
                             sender.sendText(chatID, Emoji.SUCCESS.msg("You recorded ${recordResult.hoursValue} hours and ${recordResult.minutesValue} minutes"))
+                        }
+                    }
+
+                    BotCommandType.TODAY -> {
+
+                        logger.info("processing /today command")
+
+                        val result: AnalyticTimeInfo = timeInfoService.getTodayInfo(userID)
+
+                        sender.sendText(chatID, Emoji.SUCCESS.msg("You recorded for ${result.dateInfo} : ${result.timeInfo}"))
+                    }
+
+                    BotCommandType.FROM -> {
+
+                        logger.info("processing /from command")
+
+                        val inputValues: List<String> = command.commandValues
+
+                        if (inputValues.size > 1 || inputValues.isEmpty()) {
+                            sender.sendText(chatID, Emoji.ERROR.msg("Something is wrong with your input! Please, try again"))
+                        } else {
+
+                            val result: List<AnalyticTimeInfo> = timeInfoService.getPeriodInfo(inputValues[0], userID)
+
+                            if (result.isEmpty()) {
+                                sender.sendText(chatID, Emoji.ERROR.msg("Something is wrong with your input! Please, try again"))
+                            } else {
+
+                                val messages: List<String> = result.map {
+                                    "You recorded for ${it.dateInfo} : ${it.timeInfo}"
+                                }
+
+                                sender.sendText(chatID, Emoji.SUCCESS.msg("Report: \n ${messages.joinToString(separator = "\n")}"))
+                            }
+                        }
+                    }
+
+                    BotCommandType.DATE -> {
+
+                        logger.info("processing /date command")
+
+                        val inputValues: List<String> = command.commandValues
+
+                        if (inputValues.size > 1 || inputValues.isEmpty()) {
+                            sender.sendText(chatID, Emoji.ERROR.msg("Something is wrong with your input! Please, try again"))
+                        } else {
+
+                            val result: AnalyticTimeInfo = timeInfoService.getDayInfo(inputValues[0], userID)
+
+                            if (result.userID == 0L) {
+                                sender.sendText(chatID, Emoji.ERROR.msg("Something is wrong with your input! Please, try again"))
+                            } else {
+                                sender.sendText(chatID, Emoji.SUCCESS.msg("You recorded for ${result.dateInfo} : ${result.timeInfo}"))
+                            }
                         }
                     }
                 }
