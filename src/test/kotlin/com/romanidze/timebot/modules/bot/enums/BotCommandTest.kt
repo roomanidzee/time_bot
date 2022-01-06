@@ -23,6 +23,18 @@ class BotCommandTest(val service: TimeInfoService) : WordSpec() {
                 BotCommand.parse("/record 4h")!!.type shouldBe BotCommandType.RECORD
             }
 
+            "parse today command" {
+                BotCommand.parse("/today")!!.type shouldBe BotCommandType.TODAY
+            }
+
+            "parse from command" {
+                BotCommand.parse("/from 2022-01-06")!!.type shouldBe BotCommandType.FROM
+            }
+
+            "parse date command" {
+                BotCommand.parse("/date 2022-01-06")!!.type shouldBe BotCommandType.DATE
+            }
+
             "return null on unknown commands" {
 
                 BotCommand.parse("/help") shouldBe null

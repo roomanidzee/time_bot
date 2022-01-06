@@ -1,10 +1,14 @@
 package com.romanidze.timebot.modules.time.services
 
 import com.romanidze.timebot.application.Application
+import com.romanidze.timebot.modules.time.domain.AnalyticTimeInfo
 import com.romanidze.timebot.modules.time.services.interfaces.TimeInfoService
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @SpringBootTest(classes = [Application::class])
 class TimeInfoServiceTest(val service: TimeInfoService) : WordSpec() {
@@ -50,6 +54,33 @@ class TimeInfoServiceTest(val service: TimeInfoService) : WordSpec() {
                     it.hoursValue shouldBe 0
                     it.minutesValue shouldBe 0
                 }
+            }
+
+            "show info for today" {
+
+                val currentDate: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+                val result: AnalyticTimeInfo = service.getTodayInfo(1L)
+
+                result.dateInfo shouldBe currentDate
+            }
+
+            "show info for period" {
+
+                val currentDate: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+                val result: List<AnalyticTimeInfo> = service.getPeriodInfo(currentDate, 1L)
+
+                result.size shouldBe 1
+            }
+
+            "show info for date" {
+
+                val currentDate: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+                val result: AnalyticTimeInfo = service.getDayInfo(currentDate, 1L)
+
+                result.userID shouldNotBe 0L
             }
         }
     }

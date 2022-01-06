@@ -9,6 +9,8 @@ import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @SpringBootTest(classes = [Application::class])
 class BotUpdateHandlerTest(val service: TimeInfoService) : WordSpec() {
@@ -58,6 +60,31 @@ class BotUpdateHandlerTest(val service: TimeInfoService) : WordSpec() {
                 val responseText: BotReply = botTester.processUserText(user, "/record gm")
 
                 responseText.text shouldContain "Something"
+            }
+
+            "process /today command" {
+
+                val responseText: BotReply = botTester.processUserText(user, "/today")
+
+                responseText.text shouldContain "You"
+            }
+
+            "process /from command" {
+
+                val currentDate: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+                val responseText: BotReply = botTester.processUserText(user, "/from $currentDate")
+
+                responseText.text shouldContain "Report"
+            }
+
+            "process /date command" {
+
+                val currentDate: String = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+                val responseText: BotReply = botTester.processUserText(user, "/date $currentDate")
+
+                responseText.text shouldContain "You"
             }
 
             "send warn message for unknown command" {
