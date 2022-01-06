@@ -1,1 +1,1 @@
-web: java $JAVA_TOOL_OPTIONS -jar target/time_bot.jar
+web: java -Dserver.port=$PORT $JAVA_TOOL_OPTIONS -jar target/time_bot.jar --server.port=$PORT
