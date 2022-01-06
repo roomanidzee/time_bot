@@ -24,6 +24,12 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: maven
 
       - name: Maven Build
         run: mvn verify
+
+      - name: Publish package
+        run: mvn deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
