@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8000}
+  port: ${PORT:8000}
 
 spring:
   main.web-application-type: none
@@ -11,9 +11,9 @@ spring:
   datasource:
 
     driver-class-name: org.postgresql.Driver
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/bot_db}
-    username: ${DB_USER:bot_user}
-    password: ${DB_PASS:bot_pass}
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/bot_db}
+    username: ${JDBC_DATABASE_USERNAME:bot_user}
+    password: ${JDBC_DATABASE_PASSWORD:bot_pass}
     type: com.zaxxer.hikari.HikariDataSource
     platform: postgresql
 
@@ -31,7 +31,6 @@ spring:
     baselineOnMigrate: true
 
 telegram-bot:
-  admin-user: ${BOT_ADMIN_ID:1}
+  admin-user: ${BOT_ADMIN_ID:1604685}
   token: ${BOT_TOKEN:""}
-  backup-folder: ${BOT_BACKUP_FOLDER:""}
-  poll-time: ${BOT_POLL_TIME:0 0 0 ? * SUN}
+  poll-time: ${BOT_POLL_TIME:100}

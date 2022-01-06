@@ -12,6 +12,5 @@ import javax.validation.constraints.Positive
 data class BotProperties(
     @field:Positive val adminUser: Long = 0,
     @field:NotBlank val token: String? = null,
-    @field:NotBlank val backupFolder: String? = null,
     @field:NotBlank val pollTime: String? = null
 )
