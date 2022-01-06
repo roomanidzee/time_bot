@@ -15,7 +15,7 @@ class BotPollingJob(
 
     private val getUpdates = GetUpdates()
 
-    @Scheduled(cron = "\${telegram-bot.poll-time}")
+    @Scheduled(fixedRateString = "\${telegram-bot.poll-time}")
     fun processUpdates() {
         logger.info("retrieving updates for bot...")
         val updatesResponse = telegramBot.execute(getUpdates)
