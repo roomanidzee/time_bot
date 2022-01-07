@@ -15,6 +15,7 @@ Telegram bot for time recording
 ## Bot location in Telegram
 https://t.me/time_recording_bot
 
+Bot ma be not stable because of Heroku((. But it is being restarted after some time
 
 ## Tests
 ```mvn clean test```
